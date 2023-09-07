@@ -7,7 +7,6 @@ pub fn main() {
     let mut buffer = String::new();
     let mut number: u8  = 0; 
     let mut count : u32 = 0;
-    println!("Your guess: {number}");
     while number != secret {
         count += 1;
         println!("Attempt {count}. Guess a number between 1 and 100:");
