@@ -20,20 +20,25 @@ fn main() {
     let test7 = " 🚀 ";
     assert_eq!(trim_spaces(test7), "🚀");
     println!("Tests passed!");
+
+    let test8 = "        123        
+    ";
+    assert_eq!(trim_spaces(test8), "123");
+    println!("Additional test passed!");
 }
 
 fn trim_spaces(str: &str) -> &str {
     let mut start = 0;
     let mut end = 0;
     for (i, &c) in str.as_bytes().iter().enumerate() {
-        if c != b' ' {
+        if c != b' ' && c != b'\t' && c != b'\n' {
             start = i;
             break;
         }
     }
 
     for (i, &c) in str.as_bytes().iter().rev().enumerate() {
-        if c != b' ' {
+        if c != b' ' && c != b'\t' && c != b'\n' {
             end = str.len() - i;
             break;
         }
