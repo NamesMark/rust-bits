@@ -5,8 +5,8 @@ use std::collections::HashMap;
 
 pub fn main () {
     let args: Vec<String> = env::args().collect();
-    if args.len() < 3 {
-        println!("Please provide at least 2 arguments");
+    if args.len() < 2 {
+        println!("Please provide 1 argument (source to the file)");
         return;
     }
 
@@ -18,14 +18,15 @@ pub fn main () {
 
     let contents = match buffer {
         Ok(l) => l,
-        Err(E) => {
-            println!("Failed to read the file, got an error {E}");
+        Err(e) => {
+            println!("Failed to read the file, got an error {e}");
             "".to_string()
         }
     };
 
     for word in contents.split_whitespace() {
-        let current_word_count = word_counts.entry(word.to_string()).or_insert(0);
+        let cleaned_word = word.to_lowercase().trim_matches(|c: char| !c.is_alphanumeric()).to_string();
+        let current_word_count = word_counts.entry(cleaned_word).or_insert(0);
         *current_word_count += 1;
     }
 
@@ -40,6 +41,25 @@ pub fn main () {
             most_popular_words.push(key);
         }
     }
-    println!("The most common words are {most_popular_words:?} with a count of {max_count}");
+    let number_of_words = most_popular_words.len();
+    match number_of_words {
+        0 => println!("There's no words."),
+        1 => println!("The most common word is \"{most_popular}\" with a count of {max_count}", most_popular=most_popular_words[0]),
+        _ => println!("The most common words are {most_popular_words:?} with a count of {max_count}")
+    };
+
 
 }
+
+/* 
+    Examples:
+    
+    cargo run earth_to_the_moon.txt
+    The most common word is "the" with a count of 7983
+
+    cargo run speech.txt
+    The most common words are ["it's", "because"] with a count of 2
+
+    cargo run planets.txt
+    The most common words are ["venus", "mercury", "mars", "earth", "jupiter", "saturn", "uranus", "neptune"] with a count of 1
+*/
