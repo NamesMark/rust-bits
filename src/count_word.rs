@@ -7,12 +7,10 @@ pub fn main () {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         println!("Please provide 1 argument (source to the file)");
-        return;
+        std::process::exit(1);
     }
 
     let path = format!("../assets/{}",args[1]); // path to file
-
-    let mut word_counts: HashMap<String, u32> = HashMap::new();
 
     let buffer = fs::read_to_string(path);
 
@@ -20,18 +18,22 @@ pub fn main () {
         Ok(l) => l,
         Err(e) => {
             println!("Failed to read the file, got an error {e}");
-            "".to_string()
+            std::process::exit(2);
+            //"".to_string()
         }
     };
-
+    
+    let mut word_counts: HashMap<String, u32> = HashMap::new();
+    
     for word in contents.split_whitespace() {
         let cleaned_word = word.to_lowercase().trim_matches(|c: char| !c.is_alphanumeric()).to_string();
         let current_word_count = word_counts.entry(cleaned_word).or_insert(0);
         *current_word_count += 1;
     }
-
+    
     let mut max_count = 0;
-    let mut most_popular_words : Vec<&String> = Vec::new();
+    let mut most_popular_words : Vec<&str> = Vec::new();
+
     for (key, val) in word_counts.iter() {
         if val > &max_count {
             max_count = *val;
@@ -53,7 +55,7 @@ pub fn main () {
 
 /* 
     Examples:
-    
+
     cargo run earth_to_the_moon.txt
     The most common word is "the" with a count of 7983
 
