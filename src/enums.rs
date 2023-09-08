@@ -1,3 +1,5 @@
+use std::fmt;
+
 enum Location {
     Unknown,
     Anonymous,
@@ -13,6 +15,15 @@ impl Location {
     } 
 }
 
+impl fmt::Display for Location {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Location::Known(x, y) => return write!(f, "Location is {x}, {y}"),
+            _ => return write!(f, "Location is unknown.")
+        }
+    }
+}
+
 pub fn main() {
     let address = Location::Unknown;
     address.display();
@@ -20,4 +31,6 @@ pub fn main() {
     address.display();
     let address = Location::Known(28.608295, -80.604177);
     address.display();
+
+    println!("{address}");
 }
