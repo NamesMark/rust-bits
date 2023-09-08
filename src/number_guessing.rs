@@ -28,6 +28,7 @@ pub fn main() {
             continue;
         } else if number == secret {
             println!("Congrats, indeed it is {secret}. You won in {count} turns.");
+            return;
         } else if number < secret {
             println!("No, {number} is smaller than the secret number!");
         } else {
