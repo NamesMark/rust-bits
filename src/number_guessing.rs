@@ -7,14 +7,24 @@ pub fn main() {
     let mut buffer = String::new();
     let mut number: u8  = 0; 
     let mut count : u32 = 0;
+
     while number != secret {
         count += 1;
         println!("Attempt {count}. Guess a number between 1 and 100:");
         io::stdin().read_line(&mut buffer);
-        number = buffer.trim().parse::<u8>().unwrap();
+        let input = buffer.trim().parse::<u8>();
         buffer.clear();
+
+        number = match input {
+            Ok(n) => n,
+            Err(E) => {
+                println!("Invalid input. Please enter a number (in range [1..100])");
+                continue;
+            }
+        };
+
         if number < 1 || number > 100 {
-            println!("Bad input lol");
+            println!("Bad number. The number must be in range [1..100].");
             continue;
         } else if number == secret {
             println!("Congrats, indeed it is {secret}. You won in {count} turns.");

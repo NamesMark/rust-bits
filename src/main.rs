@@ -9,12 +9,12 @@ mod display_impl;
 mod enums;
 
 fn main () {
-    //number_guessing::main();
+    number_guessing::main();
     // args::main();
     // files::main();
     // check_roster::main();
     // rectangle_struct::main();
     // sum_boxes::main();
     // display_impl::main();
-    enums::main();
+    // enums::main();
 }
